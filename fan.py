@@ -67,6 +67,10 @@ def diy_conf(content):
     pattern = r'("key"\s*:\s*"[^"]*豆[^"]*"\s*,\s*"name"\s*:\s*")[^"]*公众号[^"]*(")'
     replacement = r'\1豆瓣\2'
     content = re.sub(pattern, replacement, content)
+
+    # 删除 name 中包含"饭太硬"的项（只匹配前逗号）
+    pattern = r',?\s*\{[^{}]*"name"\s*:\s*"[^"]*饭太硬[^"]*"[^{}]*\}'
+    content = re.sub(pattern, '', content)
     
     pattern = r'{"key":"Bili"(.)*\n{"key":"Biliych"(.)*\n'
     replacement = ''
@@ -82,3 +86,4 @@ def local_conf(content):
 if __name__ == '__main__':
 
     get_fan_conf()
+
