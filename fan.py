@@ -60,7 +60,14 @@ def get_fan_conf():
             f.write(response.content)
 
 def diy_conf(content):
-    content = content.replace('备用公众号【叨观荐影】', '豆瓣')
+    #content = content.replace('原公众号已寄，新号【太太太硬了】', '豆瓣')
+    
+    # 匹配形如 {"key":"...豆...", "name":"...公众号..."} 的对象片段
+    # 支持 key 和 name 之间有任意空白，且 key/name 顺序固定为 key 先、name 后
+    pattern = r'("key"\s*:\s*"[^"]*豆[^"]*"\s*,\s*"name"\s*:\s*")[^"]*公众号[^"]*(")'
+    replacement = r'\1豆瓣\2'
+    content = re.sub(pattern, replacement, content)
+    
     pattern = r'{"key":"Bili"(.)*\n{"key":"Biliych"(.)*\n'
     replacement = ''
     content = re.sub(pattern, replacement, content)
@@ -73,4 +80,5 @@ def local_conf(content):
     content = re.sub(pattern, replacement, content)
     return content
 if __name__ == '__main__':
+
     get_fan_conf()
